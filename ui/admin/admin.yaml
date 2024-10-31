@@ -1,0 +1,439 @@
+about:
+  date: October 31, 2024 00:38:04
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 17
+  number_tables: 15
+info_toggle_checked: true
+resources:
+  Address:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: owner_id
+    - name: walker_id
+    - name: street
+    - name: city
+    - name: state
+    - name: zip_code
+    description: Address details for owners and walkers.
+    info_list: Address details for owners and walkers.
+    tab_groups:
+    - direction: toone
+      fks:
+      - owner_id
+      name: owner
+      resource: Owner
+    - direction: toone
+      fks:
+      - walker_id
+      name: walker
+      resource: Walker
+    type: Address
+    user_key: id
+  Complaint:
+    attributes:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+    - name: owner_id
+    - name: complaint_date
+      type: DATETIME
+    - name: id
+    description: Represents complaints lodged by dog owners.
+    info_list: Represents complaints lodged by dog owners.
+    tab_groups:
+    - direction: toone
+      fks:
+      - owner_id
+      name: owner
+      resource: Owner
+    type: Complaint
+    user_key: description
+  Dog:
+    attributes:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+    - name: owner_id
+    - name: age
+    - name: id
+    - name: breed
+    description: Represents a dog that is part of the dog walking business.
+    info_list: Represents a dog that is part of the dog walking business.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - dog_id
+      name: DogWalkList
+      resource: DogWalk
+    - direction: tomany
+      fks:
+      - dog_id
+      name: EnrollmentList
+      resource: Enrollment
+    - direction: toone
+      fks:
+      - owner_id
+      name: owner
+      resource: Owner
+    type: Dog
+    user_key: name
+  DogWalk:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: dog_id
+    - name: walk_id
+    description: Junction table for many-to-many relationship between dogs and walks.
+    info_list: Junction table for many-to-many relationship between dogs and walks.
+    tab_groups:
+    - direction: toone
+      fks:
+      - dog_id
+      name: dog
+      resource: Dog
+    - direction: toone
+      fks:
+      - walk_id
+      name: walk
+      resource: Walk
+    type: DogWalk
+    user_key: id
+  Enrollment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: dog_id
+    - name: service_id
+    - name: enrollment_date
+      type: DATETIME
+    - name: status
+    description: Records of dog enrollments for various walking plans.
+    info_list: Records of dog enrollments for various walking plans.
+    tab_groups:
+    - direction: toone
+      fks:
+      - dog_id
+      name: dog
+      resource: Dog
+    - direction: toone
+      fks:
+      - service_id
+      name: service
+      resource: Service
+    type: Enrollment
+    user_key: id
+  Feedback:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: owner_id
+    - name: walker_id
+    - name: rating
+    - name: comments
+    - name: feedback_date
+      type: DATETIME
+    description: Feedback from owners about the dog walking service.
+    info_list: Feedback from owners about the dog walking service.
+    tab_groups:
+    - direction: toone
+      fks:
+      - owner_id
+      name: owner
+      resource: Owner
+    - direction: toone
+      fks:
+      - walker_id
+      name: walker
+      resource: Walker
+    type: Feedback
+    user_key: id
+  Incident:
+    attributes:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+    - name: walk_id
+    - name: incident_date
+      type: DATETIME
+    - name: id
+    description: Incidents or issues that occurred during a walk.
+    info_list: Incidents or issues that occurred during a walk.
+    tab_groups:
+    - direction: toone
+      fks:
+      - walk_id
+      name: walk
+      resource: Walk
+    type: Incident
+    user_key: description
+  Owner:
+    attributes:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+    - name: phone_number
+    - name: email
+    - name: id
+    description: Represents the owner of a dog.
+    info_list: Represents the owner of a dog.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - owner_id
+      name: AddressList
+      resource: Address
+    - direction: tomany
+      fks:
+      - owner_id
+      name: ComplaintList
+      resource: Complaint
+    - direction: tomany
+      fks:
+      - owner_id
+      name: DogList
+      resource: Dog
+    - direction: tomany
+      fks:
+      - owner_id
+      name: FeedbackList
+      resource: Feedback
+    - direction: tomany
+      fks:
+      - owner_id
+      name: PaymentList
+      resource: Payment
+    type: Owner
+    user_key: name
+  Payment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: owner_id
+    - name: walk_id
+    - name: amount
+    - name: payment_date
+      type: DATETIME
+    description: Payment records for the dog walking service.
+    info_list: Payment records for the dog walking service.
+    tab_groups:
+    - direction: toone
+      fks:
+      - owner_id
+      name: owner
+      resource: Owner
+    - direction: toone
+      fks:
+      - walk_id
+      name: walk
+      resource: Walk
+    type: Payment
+    user_key: id
+  Promotion:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: code
+    - name: discount_percentage
+    - name: valid_from
+      type: DATETIME
+    - name: valid_until
+      type: DATETIME
+    description: Promotions and discounts offered to owners.
+    info_list: Promotions and discounts offered to owners.
+    type: Promotion
+    user_key: id
+  Schedule:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: walker_id
+    - name: available_from
+      type: DATETIME
+    - name: available_to
+      type: DATETIME
+    description: Scheduling details and availability for walkers.
+    info_list: Scheduling details and availability for walkers.
+    tab_groups:
+    - direction: toone
+      fks:
+      - walker_id
+      name: walker
+      resource: Walker
+    type: Schedule
+    user_key: id
+  Service:
+    attributes:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+    - name: description
+    - name: base_rate
+    - name: id
+    description: Different services offered by the business.
+    info_list: Different services offered by the business.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - service_id
+      name: EnrollmentList
+      resource: Enrollment
+    - direction: tomany
+      fks:
+      - service_id
+      name: WalkerServiceList
+      resource: WalkerService
+    type: Service
+    user_key: name
+  Walk:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: walker_id
+    - name: date_time
+      type: DATETIME
+    - name: duration_minutes
+    description: A scheduled walk for one or more dogs.
+    info_list: A scheduled walk for one or more dogs.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - walk_id
+      name: DogWalkList
+      resource: DogWalk
+    - direction: tomany
+      fks:
+      - walk_id
+      name: IncidentList
+      resource: Incident
+    - direction: tomany
+      fks:
+      - walk_id
+      name: PaymentList
+      resource: Payment
+    - direction: toone
+      fks:
+      - walker_id
+      name: walker
+      resource: Walker
+    type: Walk
+    user_key: id
+  Walker:
+    attributes:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+    - name: experience_years
+    - name: hourly_rate
+    - name: id
+    description: Represents a person who walks dogs.
+    info_list: Represents a person who walks dogs.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - walker_id
+      name: AddressList
+      resource: Address
+    - direction: tomany
+      fks:
+      - walker_id
+      name: FeedbackList
+      resource: Feedback
+    - direction: tomany
+      fks:
+      - walker_id
+      name: ScheduleList
+      resource: Schedule
+    - direction: tomany
+      fks:
+      - walker_id
+      name: WalkList
+      resource: Walk
+    - direction: tomany
+      fks:
+      - walker_id
+      name: WalkerServiceList
+      resource: WalkerService
+    type: Walker
+    user_key: name
+  WalkerService:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: service_id
+    - name: walker_id
+    description: Junction table for many-to-many relationship between walkers and
+      services.
+    info_list: Junction table for many-to-many relationship between walkers and services.
+    tab_groups:
+    - direction: toone
+      fks:
+      - service_id
+      name: service
+      resource: Service
+    - direction: toone
+      fks:
+      - walker_id
+      name: walker
+      resource: Walker
+    type: WalkerService
+    user_key: id
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'

@@ -1,0 +1,667 @@
+about:
+  date: October 31, 2024 00:38:04
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+entities:
+  Address:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: owner_id
+      template: integer
+      type: INTEGER
+    - name: walker_id
+      template: integer
+      type: INTEGER
+    - name: street
+      template: text
+      type: VARCHAR
+    - name: city
+      template: text
+      type: VARCHAR
+    - name: state
+      template: text
+      type: VARCHAR
+    - name: zip_code
+      template: text
+      type: VARCHAR
+    description: Address details for owners and walkers.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Address details for owners and walkers.
+    label: Address
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - owner_id
+      name: owner
+      resource: Owner
+    - direction: toone
+      fks:
+      - walker_id
+      name: walker
+      resource: Walker
+    type: Address
+  Complaint:
+    columns:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+      template: text
+      type: TEXT
+    - name: owner_id
+      template: integer
+      type: INTEGER
+    - name: complaint_date
+      type: DATETIME
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Represents complaints lodged by dog owners.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: description
+    home_template: home_template.html
+    info_list: Represents complaints lodged by dog owners.
+    label: Complaint
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - owner_id
+      name: owner
+      resource: Owner
+    type: Complaint
+  Dog:
+    columns:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: owner_id
+      template: integer
+      type: INTEGER
+    - name: age
+      template: integer
+      type: INTEGER
+    - name: id
+      template: integer
+      type: INTEGER
+    - name: breed
+      template: text
+      type: VARCHAR
+    description: Represents a dog that is part of the dog walking business.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Represents a dog that is part of the dog walking business.
+    label: Dog
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - dog_id
+      name: DogWalkList
+      resource: DogWalk
+    - direction: tomany
+      fks:
+      - dog_id
+      name: EnrollmentList
+      resource: Enrollment
+    - direction: toone
+      fks:
+      - owner_id
+      name: owner
+      resource: Owner
+    type: Dog
+  DogWalk:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: dog_id
+      template: integer
+      type: INTEGER
+    - name: walk_id
+      template: integer
+      type: INTEGER
+    description: Junction table for many-to-many relationship between dogs and walks.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Junction table for many-to-many relationship between dogs and walks.
+    label: DogWalk
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - dog_id
+      name: dog
+      resource: Dog
+    - direction: toone
+      fks:
+      - walk_id
+      name: walk
+      resource: Walk
+    type: DogWalk
+  Enrollment:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: dog_id
+      template: integer
+      type: INTEGER
+    - name: service_id
+      template: integer
+      type: INTEGER
+    - name: enrollment_date
+      type: DATETIME
+    - name: status
+      template: text
+      type: VARCHAR
+    description: Records of dog enrollments for various walking plans.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Records of dog enrollments for various walking plans.
+    label: Enrollment
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - dog_id
+      name: dog
+      resource: Dog
+    - direction: toone
+      fks:
+      - service_id
+      name: service
+      resource: Service
+    type: Enrollment
+  Feedback:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: owner_id
+      template: integer
+      type: INTEGER
+    - name: walker_id
+      template: integer
+      type: INTEGER
+    - name: rating
+      template: integer
+      type: INTEGER
+    - name: comments
+      template: text
+      type: TEXT
+    - name: feedback_date
+      type: DATETIME
+    description: Feedback from owners about the dog walking service.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Feedback from owners about the dog walking service.
+    label: Feedback
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - owner_id
+      name: owner
+      resource: Owner
+    - direction: toone
+      fks:
+      - walker_id
+      name: walker
+      resource: Walker
+    type: Feedback
+  Incident:
+    columns:
+    - label: ' description*'
+      name: description
+      search: true
+      sort: true
+      template: text
+      type: TEXT
+    - name: walk_id
+      template: integer
+      type: INTEGER
+    - name: incident_date
+      type: DATETIME
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Incidents or issues that occurred during a walk.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: description
+    home_template: home_template.html
+    info_list: Incidents or issues that occurred during a walk.
+    label: Incident
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - walk_id
+      name: walk
+      resource: Walk
+    type: Incident
+  Owner:
+    columns:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: phone_number
+      template: text
+      type: VARCHAR
+    - name: email
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Represents the owner of a dog.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Represents the owner of a dog.
+    label: Owner
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - owner_id
+      name: AddressList
+      resource: Address
+    - direction: tomany
+      fks:
+      - owner_id
+      name: ComplaintList
+      resource: Complaint
+    - direction: tomany
+      fks:
+      - owner_id
+      name: DogList
+      resource: Dog
+    - direction: tomany
+      fks:
+      - owner_id
+      name: FeedbackList
+      resource: Feedback
+    - direction: tomany
+      fks:
+      - owner_id
+      name: PaymentList
+      resource: Payment
+    type: Owner
+  Payment:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: owner_id
+      template: integer
+      type: INTEGER
+    - name: walk_id
+      template: integer
+      type: INTEGER
+    - name: amount
+      template: real
+      type: FLOAT
+    - name: payment_date
+      type: DATETIME
+    description: Payment records for the dog walking service.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Payment records for the dog walking service.
+    label: Payment
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - owner_id
+      name: owner
+      resource: Owner
+    - direction: toone
+      fks:
+      - walk_id
+      name: walk
+      resource: Walk
+    type: Payment
+  Promotion:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: code
+      template: text
+      type: VARCHAR
+    - name: discount_percentage
+      template: real
+      type: FLOAT
+    - name: valid_from
+      type: DATETIME
+    - name: valid_until
+      type: DATETIME
+    description: Promotions and discounts offered to owners.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Promotions and discounts offered to owners.
+    label: Promotion
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    type: Promotion
+  Schedule:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: walker_id
+      template: integer
+      type: INTEGER
+    - name: available_from
+      type: DATETIME
+    - name: available_to
+      type: DATETIME
+    description: Scheduling details and availability for walkers.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Scheduling details and availability for walkers.
+    label: Schedule
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - walker_id
+      name: walker
+      resource: Walker
+    type: Schedule
+  Service:
+    columns:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: description
+      template: text
+      type: TEXT
+    - name: base_rate
+      template: real
+      type: FLOAT
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Different services offered by the business.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Different services offered by the business.
+    label: Service
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - service_id
+      name: EnrollmentList
+      resource: Enrollment
+    - direction: tomany
+      fks:
+      - service_id
+      name: WalkerServiceList
+      resource: WalkerService
+    type: Service
+  Walk:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: walker_id
+      template: integer
+      type: INTEGER
+    - name: date_time
+      type: DATETIME
+    - name: duration_minutes
+      template: integer
+      type: INTEGER
+    description: A scheduled walk for one or more dogs.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: A scheduled walk for one or more dogs.
+    label: Walk
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - walk_id
+      name: DogWalkList
+      resource: DogWalk
+    - direction: tomany
+      fks:
+      - walk_id
+      name: IncidentList
+      resource: Incident
+    - direction: tomany
+      fks:
+      - walk_id
+      name: PaymentList
+      resource: Payment
+    - direction: toone
+      fks:
+      - walker_id
+      name: walker
+      resource: Walker
+    type: Walk
+  Walker:
+    columns:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: experience_years
+      template: integer
+      type: INTEGER
+    - name: hourly_rate
+      template: real
+      type: FLOAT
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Represents a person who walks dogs.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Represents a person who walks dogs.
+    label: Walker
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - walker_id
+      name: AddressList
+      resource: Address
+    - direction: tomany
+      fks:
+      - walker_id
+      name: FeedbackList
+      resource: Feedback
+    - direction: tomany
+      fks:
+      - walker_id
+      name: ScheduleList
+      resource: Schedule
+    - direction: tomany
+      fks:
+      - walker_id
+      name: WalkList
+      resource: Walk
+    - direction: tomany
+      fks:
+      - walker_id
+      name: WalkerServiceList
+      resource: WalkerService
+    type: Walker
+  WalkerService:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: service_id
+      template: integer
+      type: INTEGER
+    - name: walker_id
+      template: integer
+      type: INTEGER
+    description: Junction table for many-to-many relationship between walkers and
+      services.
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Junction table for many-to-many relationship between walkers and services.
+    label: WalkerService
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - service_id
+      name: service
+      resource: Service
+    - direction: toone
+      fks:
+      - walker_id
+      name: walker
+      resource: Walker
+    type: WalkerService
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: false
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    mode: tab
+    pick_style: list
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: false
